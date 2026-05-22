@@ -52,7 +52,8 @@ function renderMap(view) {
   overlay.innerHTML = "";
   BOOTH_DATA[curFloor].booths.forEach(b => {
     const el = document.createElement("div");
-    el.className = "booth" + (isMarked(b.id) ? " marked" : "") + (isBoothDone(b.id) ? " done" : "");
+    const marked = isMarked(b.id);
+    el.className = "booth" + (marked ? " marked pri-" + priOf(b.id) : "") + (isBoothDone(b.id) ? " done" : "");
     el.style.left = b.x + "%";
     el.style.top = b.y + "%";
     el.style.width = b.w + "%";
@@ -165,6 +166,7 @@ function prioritySelector(id) {
       data.priority = val; save();
       row.querySelectorAll(".pri-btn").forEach(x => x.classList.remove("on"));
       b.classList.add("on");
+      renderMap("settings");
     });
     row.appendChild(b);
   });
