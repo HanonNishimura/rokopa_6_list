@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#c0392b">
+<title>ろこぱ 買い物リスト</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>買い物リスト</h1>
+  <nav class="tabs">
+    <button class="tab active" data-view="settings">設定</button>
+    <button class="tab" data-view="list">買い物リスト</button>
+  </nav>
+</header>
+
+<div class="floor-bar">
+  <button class="floor active" data-floor="2">2階</button>
+  <button class="floor" data-floor="3">3階</button>
+</div>
+
+<!-- 設定画面 -->
+<main id="view-settings" class="view active">
+  <p class="hint">地図のブースをタップするとマーク（赤）されます。マークしたブースにサークル情報を登録できます。</p>
+  <div class="map-wrap" id="map-settings">
+    <div class="map-inner" id="inner-settings">
+      <img id="map-img-settings" alt="会場マップ" draggable="false">
+      <div class="overlay" id="overlay-settings"></div>
+    </div>
+    <div class="zoom-ctrl">
+      <button type="button" data-mz="settings" data-z="in" aria-label="拡大">＋</button>
+      <button type="button" data-mz="settings" data-z="out" aria-label="縮小">－</button>
+      <button type="button" data-mz="settings" data-z="reset" aria-label="リセット">⤢</button>
+    </div>
+  </div>
+  <section id="editor-list"></section>
+</main>
+
+<!-- 買い物リスト画面 -->
+<main id="view-list" class="view">
+  <div class="map-wrap" id="map-list">
+    <div class="map-inner" id="inner-list">
+      <img id="map-img-list" alt="会場マップ" draggable="false">
+      <div class="overlay" id="overlay-list"></div>
+    </div>
+    <div class="zoom-ctrl">
+      <button type="button" data-mz="list" data-z="in" aria-label="拡大">＋</button>
+      <button type="button" data-mz="list" data-z="out" aria-label="縮小">－</button>
+      <button type="button" data-mz="list" data-z="reset" aria-label="リセット">⤢</button>
+    </div>
+  </div>
+  <div class="total-bar">
+    <div class="tb-row"><span>ほしい物 合計</span><strong id="total-amount">¥0</strong></div>
+    <div class="tb-row sub"><span>未購入（残り）</span><strong id="remain-amount">¥0</strong></div>
+  </div>
+  <section id="checklist"></section>
+</main>
+
+<script src="booths.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

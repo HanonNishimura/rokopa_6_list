@@ -1,0 +1,15 @@
+{
+  "name": "ろこぱ 買い物リスト",
+  "short_name": "買い物リスト",
+  "description": "同人イベントの買い物リスト・会場マップ管理アプリ",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f5f7",
+  "theme_color": "#c0392b",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
