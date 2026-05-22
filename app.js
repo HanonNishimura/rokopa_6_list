@@ -26,8 +26,15 @@ function boothMeta(id) {
 }
 function isMarked(id) { return !!state.booths[id]; }
 function ensureBooth(id) {
-  if (!state.booths[id]) state.booths[id] = { name: "", url: "", items: [] };
+  if (!state.booths[id]) state.booths[id] = { name: "", url: "", items: [], priority: "mid" };
   return state.booths[id];
+}
+
+const PRI_RANK = { high: 0, mid: 1, low: 2 };
+const PRI_LABEL = { high: "高", mid: "中", low: "低" };
+function priOf(id) { return (state.booths[id] && state.booths[id].priority) || "mid"; }
+function markedIdsByPriority() {
+  return markedIdsSorted().sort((a, b) => PRI_RANK[priOf(a)] - PRI_RANK[priOf(b)]);
 }
 
 /* ---------- map rendering ---------- */
@@ -105,6 +112,7 @@ function editorCard(id) {
   head.appendChild(close);
   card.appendChild(head);
 
+  card.appendChild(prioritySelector(id));
   card.appendChild(fieldInput("サークル名", data.name, "text", v => { data.name = v; save(); }));
   card.appendChild(fieldInput("URL（お品書きなど）", data.url, "url", v => { data.url = v; save(); }));
 
@@ -131,6 +139,31 @@ function editorCard(id) {
   card.appendChild(unmark);
 
   return card;
+}
+
+function prioritySelector(id) {
+  const data = state.booths[id];
+  const wrap = document.createElement("div");
+  wrap.className = "field pri-select";
+  const label = document.createElement("label");
+  label.textContent = "優先度";
+  wrap.appendChild(label);
+  const row = document.createElement("div");
+  row.className = "pri-row";
+  ["high", "mid", "low"].forEach(val => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "pri-btn pri-" + val + ((data.priority || "mid") === val ? " on" : "");
+    b.textContent = PRI_LABEL[val];
+    b.addEventListener("click", () => {
+      data.priority = val; save();
+      row.querySelectorAll(".pri-btn").forEach(x => x.classList.remove("on"));
+      b.classList.add("on");
+    });
+    row.appendChild(b);
+  });
+  wrap.appendChild(row);
+  return wrap;
 }
 
 function fieldInput(label, value, type, onInput) {
@@ -174,7 +207,7 @@ function itemRow(boothId, idx) {
 /* ---------- shopping list ---------- */
 function renderChecklist() {
   const wrap = document.getElementById("checklist");
-  const ids = markedIdsSorted().filter(id => boothMeta(id) && boothMeta(id).floor === curFloor);
+  const ids = markedIdsByPriority().filter(id => boothMeta(id) && boothMeta(id).floor === curFloor);
   const allIds = markedIdsSorted();
 
   if (allIds.length === 0) {
@@ -194,12 +227,14 @@ function renderChecklist() {
 
 function checkCard(id) {
   const data = state.booths[id];
+  const pri = data.priority || "mid";
   const card = document.createElement("div");
-  card.className = "card"; card.dataset.id = id;
+  card.className = "card pricard-" + pri; card.dataset.id = id;
 
   const head = document.createElement("div");
   head.className = "card-head";
-  head.innerHTML = '<span class="badge">' + id + '</span>';
+  head.innerHTML = '<span class="badge">' + id + '</span>' +
+    '<span class="pri-chip pri-' + pri + '">優先度 ' + PRI_LABEL[pri] + '</span>';
   const titleWrap = document.createElement("span");
   titleWrap.className = "grow";
   if (data.url) {
