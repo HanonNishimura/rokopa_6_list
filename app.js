@@ -25,6 +25,12 @@ function boothMeta(id) {
   return null;
 }
 function isMarked(id) { return !!state.booths[id]; }
+function isBoothDone(id) {
+  const b = state.booths[id];
+  if (!b || !b.items || b.items.length === 0) return false;
+  // 完了 = 欲しい品物がすべて購入済み（ほしい外の品物は無視）
+  return b.items.every(it => it.bought || it.checked === false);
+}
 function ensureBooth(id) {
   if (!state.booths[id]) state.booths[id] = { name: "", url: "", items: [], priority: "mid" };
   return state.booths[id];
@@ -46,7 +52,7 @@ function renderMap(view) {
   overlay.innerHTML = "";
   BOOTH_DATA[curFloor].booths.forEach(b => {
     const el = document.createElement("div");
-    el.className = "booth" + (isMarked(b.id) ? " marked" : "");
+    el.className = "booth" + (isMarked(b.id) ? " marked" : "") + (isBoothDone(b.id) ? " done" : "");
     el.style.left = b.x + "%";
     el.style.top = b.y + "%";
     el.style.width = b.w + "%";
@@ -248,6 +254,12 @@ function checkCard(id) {
     titleWrap.appendChild(s);
   }
   head.appendChild(titleWrap);
+  if (isBoothDone(id)) {
+    card.classList.add("card-done");
+    const dchip = document.createElement("span");
+    dchip.className = "done-chip"; dchip.textContent = "✓ 完了";
+    head.appendChild(dchip);
+  }
   card.appendChild(head);
 
   if (data.items.length === 0) {
@@ -256,7 +268,7 @@ function checkCard(id) {
     card.appendChild(p);
   } else {
     let cardTotal = 0;
-    const rerender = () => { const y = window.scrollY; renderChecklist(); window.scrollTo(0, y); };
+    const rerender = () => { const y = window.scrollY; renderChecklist(); renderMap("list"); window.scrollTo(0, y); };
     data.items.forEach((it) => {
       const want = it.checked !== false;
       const bought = it.bought === true;

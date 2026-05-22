@@ -1,4 +1,4 @@
-const CACHE = "rokopa-shopping-v6";
+const CACHE = "rokopa-shopping-v7";
 const ASSETS = [
   "./",
   "./index.html",

@@ -65,6 +65,7 @@ header h1 { margin: 0 0 8px; font-size: 18px; }
 }
 #view-settings .booth:active { background: rgba(0,120,255,.3); }
 .booth.marked { background: var(--red-soft); border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+.booth.marked.done { background: rgba(46,158,84,.55); border-color: #2e9e54; box-shadow: 0 0 0 1px #2e9e54; }
 .booth .pin {
   position: absolute; top: -7px; right: -7px; width: 14px; height: 14px;
   background: var(--red); border: 2px solid #fff; border-radius: 50%;
@@ -107,6 +108,8 @@ header h1 { margin: 0 0 8px; font-size: 18px; }
 .pricard-high { border-left: 5px solid #c0392b; }
 .pricard-mid  { border-left: 5px solid #e08e0b; }
 .pricard-low  { border-left: 5px solid #c9ccd1; }
+.card-done { border-left-color: #2e9e54 !important; background: #f1faf3; }
+.done-chip { background: #2e9e54; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-left: 6px; }
 .items-head { font-size: 12px; color: var(--muted); margin: 10px 0 6px; font-weight: 600; }
 .item-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
 .item-row .iname { flex: 1; }
